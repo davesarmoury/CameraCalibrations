@@ -7,11 +7,11 @@ import os
 from tqdm import tqdm
 
 # Parameters
-IMAGES_DIR = 'images/papalook/'
-SQUARE_SIZE = 2.49
-WIDTH = 7
-HEIGHT = 7
-FN = 'papalook'
+IMAGES_DIR = 'images/hero8/'
+SQUARE_SIZE = 2.5
+WIDTH = 8
+HEIGHT = 11
+FN = 'hero8'
 
 def calibrate_chessboard(dir_path, square_size, width, height):
     '''Calibrate a camera using chessboard images.'''
@@ -28,7 +28,6 @@ def calibrate_chessboard(dir_path, square_size, width, height):
     objpoints = []  # 3d point in real world space
     imgpoints = []  # 2d points in image plane.
 
-
     images = os.listdir(dir_path)
     print(images)
 
@@ -37,7 +36,8 @@ def calibrate_chessboard(dir_path, square_size, width, height):
         img = cv2.imread(dir_path + str(fname))
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-        cv2.imshow('img', img)
+        img2 = cv2.resize(img, (1280, 720))
+        cv2.imshow('img', img2)
         cv2.waitKey(5)
 
         # Find the chess board corners
@@ -50,7 +50,8 @@ def calibrate_chessboard(dir_path, square_size, width, height):
             corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
             imgpoints.append(corners2)
 
-            cv2.drawChessboardCorners(img, (7,6), corners2, ret)
+            cv2.drawChessboardCorners(img, (HEIGHT, WIDTH), corners2, ret)
+            img = cv2.resize(img, (1280, 720))
             cv2.imshow('img', img)
             cv2.waitKey(1000)
 
